@@ -1,0 +1,272 @@
+{% extends "base_login.html" %}
+
+{% block connect %}
+    {% if user_id %}
+    <div class="w3-container w3-section w3-red w3-col m3 w3-animate-opacity" style="position:relative;top: 10px;left:40%">
+        <span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span>
+        <h3>You have logged in!</h3>
+        <h4>Please logout first.</h4>
+    </div>
+    {% else %}
+
+    <div class="w3-col m3 w3-light-grey w3-animate-opacity" style="position:relative;top:150px;left:60%">
+
+        <div class="w3-card-2 w3-padding w3-row-padding">
+            <div>
+                <ul class="w3-pagination">
+                    <li><a id="choose_administrators" class="w3-hover-green">Administrators</a></li>
+                    <li><a id="choose_students" class="w3-hover-blue">Students</a></li>
+                </ul>
+            </div>
+
+            <!--for Administrators-->
+            <div id="login_administrators">
+                <h2 class="w3-center">Login</h2>
+
+                <h5 class="w3-center w3-green w3-text-white">Administrators</h5>
+
+                <label class="w3-label w3-text-blue"><b>User id</b></label>
+                <input id="administrators_user_id" class="w3-input w3-border" type="text" name="administrators_user_id">
+
+                <label class="w3-label w3-text-blue"><b>Password</b></label>
+                <input id="administrators_password" class="w3-input w3-border" type="password" name="administrators_password">
+
+                <p id="administrators_error_01" class="w3-text-pink">Wrong User Id or Password</p>
+                <p id="administrators_error_02" class="w3-text-pink">Unknown Error</p>
+                <p id="administrators_error_03" class="w3-text-pink">ID Already Exists</p>
+
+                <br>
+
+                <button id="administrators_submit_login" class="w3-btn w3-blue w3-left" style="width:49%" name="login">Login</button>
+                <button id="administrators_submit_register" class="w3-btn w3-blue w3-right" style="width:49%" name="register">Register</button>
+            </div>
+
+            <!--for Students-->
+            <div id="login_students">
+                <h2 class="w3-center">Login</h2>
+
+                <h5 class="w3-center w3-blue w3-text-white">Students</h5>
+
+                <label class="w3-label w3-text-blue"><b>Administrators id</b></label>
+                <input id="stu_administrators_id" class="w3-input w3-border" type="text">
+
+                <label class="w3-label w3-text-blue"><b>Student Id</b></label>
+                <input id="students_user_id" class="w3-input w3-border" type="text">
+
+                <label class="w3-label w3-text-blue"><b>Password</b></label>
+                <input id="students_password" class="w3-input w3-border" type="password">
+
+                <p id="students_error_01" class="w3-text-pink">Wrong User Id or Password</p>
+                <p id="students_error_02" class="w3-text-pink">Unknown Error</p>
+                <p id="students_error_03" class="w3-text-pink">ID Already Exists</p>
+                <p id="students_error_04" class="w3-text-pink">Can't Find Students</p>
+
+                <br>
+
+                <button id="students_submit_login" class="w3-btn w3-blue w3-left" style="width:49%" name="login">Login</button>
+                <button id="students_submit_register" class="w3-btn w3-blue w3-right" style="width:49%" name="register">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="login_success" class="w3-container w3-section w3-green w3-col w3-animate-opacity" style="top: 10px;width:45%">
+        <span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span>
+        <h3>Login successfully!</h3>
+    </div>
+
+    <div id="register_success" class="w3-container w3-section w3-green w3-col w3-animate-opacity" style="top: 10px;width:45%">
+        <span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span>
+        <h3>Register successfully!</h3>
+    </div>
+
+    <script src="../static/jquery.js"></script>
+    <!--hide-->
+    <script>
+    $(function(){
+        $('#administrators_error_01').hide();
+        $('#administrators_error_02').hide();
+        $('#administrators_error_03').hide();
+        $('#administrators_error_04').hide();
+
+        $('#students_error_01').hide();
+        $('#students_error_02').hide();
+        $('#students_error_03').hide();
+        $('#students_error_04').hide();
+
+        $('#login_success').hide();
+        $('#register_success').hide();
+
+        $('#login_administrators').show();
+        $('#login_students').hide();
+    });
+    </script>
+    <script>
+    $(function(){
+        $('#choose_administrators').click(function(){
+            $('#login_administrators').show();
+            $('#login_students').hide();
+        });
+        $('#choose_students').click(function(){
+            $('#login_administrators').hide();
+            $('#login_students').show();
+        });
+    });
+    </script>
+    <!--post-->
+    <script>
+    $(function(){
+    $('#administrators_submit_login').click(function(){
+        var data = {};
+        data["user_id"] = $('#administrators_user_id').val();
+        data["password"] = $('#administrators_password').val();
+        data["clickType"] = "administrators_Login";
+        var jsonStr =JSON.stringify(data)
+        $.ajax({
+            type: "post",
+            url: "login",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: jsonStr,
+            success: function(res){
+                var val = {};
+                $.each(res,function(i,v){
+                    val[i] = v
+                });
+                temp = val["error_des"]
+                if(temp == "success"){
+                    $('#administrators_error_01').hide();
+                    $('#administrators_error_02').hide();
+                    $('#administrators_error_03').hide();
+                    $('#login_success').show();
+
+                    function sleep(ms) {
+                        return new Promise(resolve =>
+                            setTimeout(resolve, ms)
+                        )
+                    }
+                    sleep(1000).then(()=>{
+                       window.location.href = 'http://127.0.0.1:5000/home';
+                    })
+                }
+                else if(temp == "error_id_password"){
+                    $('#administrators_error_01').show();
+                }
+            }
+        });
+    });
+
+    $('#administrators_submit_register').click(function(){
+        var data = {};
+        data["user_id"] = $('#administrators_user_id').val();
+        data["password"] = $('#administrators_password').val();
+        data["clickType"] = "administrators_Register";
+        var jsonStr =JSON.stringify(data)
+        $.ajax({
+            type: "post",
+            url: "login",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: jsonStr,
+            success: function(res){
+                var val = {};
+                $.each(res, function(i,v){
+                    val[i] = v
+                });
+                temp = val["error_des"]
+                if(temp == "success"){
+                    $('#administrators_error_01').hide();
+                    $('#administrators_error_02').hide();
+                    $('#administrators_error_03').hide();
+                    $('#register_success').show();
+                }
+                else if(temp == "unknown_error"){
+                    $('#administrators_error_02').show();
+                }
+                else if(temp == "already_have"){
+                    $('#administrators_error_03').show();
+                }
+            }
+        });
+    });
+    });
+    </script>
+    <script>
+    $(function(){
+    $('#students_submit_login').click(function(){
+        var data = {};
+        data["user_id"] = $('#students_user_id').val();
+        data["password"] = $('#students_password').val();
+        data["administrators_id"] = $('#stu_administrators_id').val();
+        data["clickType"] = "students_Login";
+        var jsonStr =JSON.stringify(data)
+        $.ajax({
+            type: "post",
+            url: "login",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: jsonStr,
+            success: function(res){
+                var val = {};
+                $.each(res,function(i,v){
+                    val[i] = v
+                });
+                temp = val["error_des"]
+                if(temp == "success"){
+                    $('#students_error_01').hide();
+                    $('#students_error_02').hide();
+                    $('#students_error_03').hide();
+                    $('#login_success').show();
+
+                    window.location.href = 'http://127.0.0.1:5000/student';
+                }
+                else if(temp == "error_id_password"){
+                    $('#students_error_01').show();
+                }
+            }
+        });
+    });
+
+    $('#students_submit_register').click(function(){
+        var data = {};
+        data["user_id"] = $('#students_user_id').val();
+        data["password"] = $('#students_password').val();
+        data["administrators_id"] = $('#stu_administrators_id').val();
+        data["clickType"] = "students_Register";
+        var jsonStr =JSON.stringify(data)
+        $.ajax({
+            type: "post",
+            url: "login",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: jsonStr,
+            success: function(res){
+                var val = {};
+                $.each(res, function(i,v){
+                    val[i] = v
+                });
+                temp = val["error_des"]
+
+                $('#students_error_01').hide();
+                $('#students_error_02').hide();
+                $('#students_error_03').hide();
+                $('#students_error_04').hide();
+
+                if(temp == "success"){
+                    $('#register_success').show();
+                }
+                else if(temp == "unknown_error"){
+                    $('#students_error_02').show();
+                }
+                else if(temp == "already_have"){
+                    $('#students_error_03').show();
+                }
+                else if(temp == "cant_find_stu"){
+                    $('#students_error_04').show();
+                }
+            }
+        });
+    });
+    });
+    </script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base_login.html" %}
+
+{% block connect %}
+<div class="w3-container w3-card-4 w3-round w3-animate-opacity" style="left:30%;width:45%;position:relative;top:40px">
+    <h4>提示信息</h4>
+    <h5 class="w3-text-blue">Logout successfully!</h5>
+    <p><span id="second">5</span>秒后自动回到主页</p>
+</div>
+
+<script src="../static/jquery.js"></script>
+<script type="text/javascript">
+        //获取显示秒数的元素，通过定时器来更改秒数
+        var num=document.getElementById("second").innerHTML;
+
+        function count(){
+            num--;
+            document.getElementById("second").innerHTML=num;
+            //通过window的location和history对象来控制网页的跳转
+            if(num==0){
+                window.location.href = 'http://127.0.0.1:5000/home';
+            }
+        }
+        window.setInterval("count()",1000);
+
+        function back(){
+            window.history.back();
+        }
+</script>
+{% endblock %}

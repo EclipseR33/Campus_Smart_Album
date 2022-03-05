@@ -1,0 +1,354 @@
+{% extends "base.html" %}
+
+{% block connect %}
+<div class="w3-main w3-animate-opacity" style="margin-left:300px">
+    <!-- Header -->
+    <header class="w3-container">
+        <h1><b>Image</b></h1>
+        <div class="w3-section w3-bottombar w3-padding-16">
+            <button class="w3-btn w3-white" id="nav_img_base">Base</button>
+            <button class="w3-btn" id="nav_img_base_onclick">Base</button>
+            <button class="w3-btn w3-white" id="nav_imgs">Images</button>
+            <button class="w3-btn" id="nav_imgs_onclick">Images</button>
+            <button class="w3-btn w3-white" id="nav_imgs_post">Image Add</button>
+            <button class="w3-btn" id="nav_imgs_post_onclick">Image Add</button>
+        </div>
+    </header>
+    <div class="w3-row  w3-animate-opacity">
+        <div>
+            <div class="w3-row-padding">
+                <div>
+                    <hr>
+                    <div class="w3-padding w3-row-padding" id="post" style="width:75%;margin:0 auto">
+                        <h2 class="w3-center">Base Post</h2>
+                        <div id="base_stu_check">
+                            <label class="w3-label w3-text-blue"><b>Student ID</b></label>
+                            <input id="in_base_stu_check_id" class="w3-input w3-border" type="text">
+
+                            <button id="button_base_stu_check" class="w3-btn w3-light-blue" style="width:100%">Check</button>
+
+                            <p id="wrong_check_type_error" class="w3-text-red">Please Input Integer</p>
+                            <p id="wrong_check_cant_find" class="w3-text-red">Can't Find</p>
+                        </div>
+
+                        <div id="base_show">
+                            <table id="del-check-post" class="w3-table w3-bordered w3-striped w3-border w3-hoverable">
+                                <tr>
+                                    <th>Student_ID</th>
+                                    <th>Grade</th>
+                                    <th>Class</th>
+                                    <th>Name</th>
+                                    <th>Sex</th>
+                                </tr>
+                                <tr>
+                                    <th><input id="show_base_check_id" class="w3-input" type="text" readonly ></th>
+                                    <th><input id="show_base_check_grade" class="w3-input" type="text" readonly></th>
+                                    <th><input id="show_base_check_class" class="w3-input" type="text" readonly></th>
+                                    <th><input id="show_base_check_name" class="w3-input" type="text" readonly></th>
+                                    <th><input id="show_base_check_sex" class="w3-input" type="text" readonly></th>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div id="base_image_add">
+                            <form id="add" onsubmit="return false">
+                                <label class="w3-label w3-text-blue"><b>Base Image</b></label>
+                                <input name="image_file" type="file" style="width:100%">
+
+                                <br>
+                                <br>
+
+                                <button id="post_sub" class="w3-btn w3-light-blue" style="width:100%">Post</button>
+                            </form>
+                        </div>
+
+                        <div id="base_image_have">
+                            <label class="w3-label w3-text-blue"><b>Image</b></label>
+                            <div id="base_image_have_show" style="text-align:center">
+
+                            </div>
+
+                            <button id="change_sub" class="w3-btn w3-light-blue" style="width:100%">Change</button>
+
+                            <div id="base_image_have_post">
+                                <form id="have_add" onsubmit="return false">
+                                    <label class="w3-label w3-text-blue"><b>Base Image</b></label>
+                                    <input name="image_file" type="file" style="width:100%">
+
+                                    <br>
+                                    <br>
+
+                                    <button id="have_post_sub" class="w3-btn w3-light-blue" style="width:100%">Post</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w3-padding w3-row-padding" id="imgs" style="margin:0 auto">
+                        <!--image add-->
+                        <div class="w3-row">
+                            <div class="w3-col m12">
+                                <div class="w3-container">
+    <!--                                    图片展示-->
+                                    <div id="imgs_image_show" class="w3-row-padding">
+
+                                        <div class="w3-third w3-container w3-margin-bottom">
+                                            {% for index in dirs1 %}
+                                            <div class="w3-white">
+                                                <img src="../static/img/User/{{user_id}}/img/{{dirs1[index]['img']}}" class="w3-hover-opacity" style="width:100%; height:auto">
+                                                {% if dirs1[index]['txt'] %}
+                                                <div class="w3-container w3-text-grey">
+                                                    Included users:
+                                                    <br>
+                                                    {{dirs1[index]['txt']}}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <br>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="w3-third w3-container w3-margin-bottom">
+                                            {% for index in dirs2 %}
+                                            <div class="w3-white">
+                                                <img src="../static/img/User/{{user_id}}/img/{{dirs2[index]['img']}}" class="w3-hover-opacity" style="width:100%; height:auto">
+                                                {% if dirs2[index]['txt'] %}
+                                                <div class="w3-container w3-text-grey">
+                                                    Included users:
+                                                    <br>
+                                                    {{dirs2[index]['txt']}}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <br>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="w3-third w3-container w3-margin-bottom">
+                                            {% for index in dirs3 %}
+                                            <div class="w3-white">
+                                                <img src="../static/img/User/{{user_id}}/img/{{dirs3[index]['img']}}" class="w3-hover-opacity" style="width:100%; height:auto">
+                                                {% if dirs3[index]['txt'] %}
+                                                <div class="w3-container w3-text-grey">
+                                                    Included users:
+                                                    <br>
+                                                    {{dirs3[index]['txt']}}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <br>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w3-padding w3-row-padding" id="img_post" style="width:50%;margin:0 auto">
+                        <div class="w3-accordion w3-light-grey w3-center">
+                            <div id="imgs_image_have_post" class="">
+                                <form id="imgs_have_add" onsubmit="return false">
+                                    <h2 class="w3-center">Image Add</h2>
+                                    <input name="image_file" type="file" style="width:100%">
+                                    <br>
+                                    <br>
+                                    <button id="imgs_have_post_sub" class="w3-btn w3-light-blue" style="width:100%">Post</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../static/jquery.js"></script>
+<!--hide-->
+<script>
+$(function(){
+    $('#img_base').hide();
+});
+</script>
+<!--show_hide-->
+<script>
+$(function(){
+    $('#nav_img_base').show();
+    $('#nav_img_base_onclick').hide();
+    $('#nav_imgs').hide();
+    $('#nav_imgs_onclick').show();
+    $('#nav_imgs_post').show();
+    $('#nav_imgs_post_onclick').hide();
+
+    $('#post').hide();
+    $('#imgs').show();
+    $('#img_post').hide();
+
+    $('#img_base').show();
+    $('#base_stu_check').show();
+
+    $('#wrong_check_type_error').hide();
+    $('#wrong_check_cant_find').hide();
+    $('#base_image_add').hide();
+    $('#base_show').hide();
+    $('#base_image_have').hide();
+    $('#base_image_have_post').hide();
+
+    $('#nav_img_base').click(function(){
+        $('#nav_img_base').hide();
+        $('#nav_img_base_onclick').show();
+        $('#nav_imgs').show();
+        $('#nav_imgs_onclick').hide();
+        $('#nav_imgs_post').show();
+        $('#nav_imgs_post_onclick').hide();
+
+        $('#post').show();
+        $('#imgs').hide();
+        $('#img_post').hide();
+
+        $('#img_base').show();
+        $('#base_stu_check').show();
+
+        $('#wrong_check_type_error').hide();
+        $('#wrong_check_cant_find').hide();
+        $('#base_image_add').hide();
+        $('#base_show').hide();
+        $('#base_image_have').hide();
+        $('#base_image_have_post').hide();
+    });
+    $('#nav_imgs').click(function(){
+        $('#nav_img_base').show();
+        $('#nav_img_base_onclick').hide();
+        $('#nav_imgs').hide();
+        $('#nav_imgs_onclick').show();
+        $('#nav_imgs_post').show();
+        $('#nav_imgs_post_onclick').hide();
+
+        $('#post').hide();
+        $('#imgs').show();
+        $('#img_post').hide();
+    });
+    $('#nav_imgs_post').click(function(){
+        $('#nav_img_base').show();
+        $('#nav_img_base_onclick').hide();
+        $('#nav_imgs').show();
+        $('#nav_imgs_onclick').hide();
+        $('#nav_imgs_post').hide();
+        $('#nav_imgs_post_onclick').show();
+
+        $('#post').hide();
+        $('#imgs').hide();
+        $('#img_post').show();
+    });
+});
+</script>
+<!--base-->
+<script>
+$(function(){
+    $('#button_base_stu_check').click(function(){
+        var data = {};
+        data["id"] = $('#in_base_stu_check_id').val();
+        var jsonStr =JSON.stringify(data)
+        $.ajax({
+            type:"post",
+            url: "/image/base/check",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: jsonStr,
+            success: function(res){
+                var val = {};
+                $.each(res,function(i,v){
+                    val[i] = v
+                });
+                temp = val["error_des"]
+
+                $('#wrong_check_type_error').hide();
+                $('#wrong_check_cant_find').hide();
+                $('#base_show').hide();
+                $('#base_image_add').hide();
+                $('#base_image_have').hide();
+
+                if(temp == "success"){
+                    $('#base_show').show();
+
+                    $('#show_base_check_id').val(val["student_id"]);
+                    $('#show_base_check_grade').val(val["grade"]);
+                    $('#show_base_check_class').val(val["class"]);
+                    $('#show_base_check_name').val(val["name"]);
+                    $('#show_base_check_sex').val(val["sex"]);
+
+                    if(val["is_have"]==true){
+                        $('#base_image_have').show();
+                        user_id = $('#user_id').html();
+                        id = $('#in_base_stu_check_id').val();
+                        string = '<img src="static/img/User/' + user_id + '/Base/' + id + '.jpg">'
+                        $('#base_image_have_show').html(string);
+                    }
+                    else{
+                        $('#base_image_add').show();
+                    }
+                }
+                else if(temp == "type_error"){
+                    $('#wrong_check_type_error').show();
+                }
+                else if(temp == "cant_find"){
+                    $('#wrong_check_cant_find').show();
+                }
+            }
+        });
+    });
+
+    $('#post_sub').click(function(){
+        var data = new FormData($('#add')[0]);
+        id = $('#in_base_stu_check_id').val();
+        $.ajax({
+            type: "post",
+            url: "/image/base/post",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function(res){
+            }
+        });
+    });
+
+    $('#change_sub').click(function(){
+        $('#base_image_have_post').show();
+    });
+
+    $('#have_post_sub').click(function(){
+        var data = new FormData($('#have_add')[0]);
+        id = $('#in_base_stu_check_id').val();
+        $.ajax({
+            type: "post",
+            url: "/image/base/post",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function(res){
+            }
+        });
+    });
+});
+</script>
+<script>
+$(function(){
+    $('#imgs_have_post_sub').click(function(){
+        var data = new FormData($('#imgs_have_add')[0]);
+        $.ajax({
+            type: "post",
+            url: "/image/img/post",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function(res){
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,421 @@
+{% extends "base.html" %}
+
+{% block connect %}
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main w3-animate-opacity" style="margin-left:300px">
+
+    <!-- Header -->
+    <header class="w3-container">
+        <h1><b>Managing students</b></h1>
+        <div class="w3-section w3-bottombar w3-padding-16">
+            <button class="w3-btn w3-white" id="add_stu">Add Students</button>
+            <button class="w3-btn" id="add_stu_onclick">Add Students</button>
+            <button class="w3-btn w3-white" id="delete_stu">Delete Students</button>
+            <button class="w3-btn" id="delete_stu_onclick">Delete Students</button>
+            <button class="w3-btn w3-white" id="select_stu">Select Students</button>
+            <button class="w3-btn" id="select_stu_onclick">Select Students</button>
+        </div>
+    </header>
+    <div class="w3-row">
+        <div>
+            <div class="w3-row-padding">
+                <div style="width:100%;margin:0 auto">
+                    <!--Add Students-->
+                    <div id="add_stu_show" class="w3-animate-opacity" style="width:50%;margin:0 auto">
+                        <div class="w3-padding w3-row-padding">
+                            <h2 class="w3-center">Add Students</h2>
+
+                            <label class="w3-label w3-text-blue">Student ID</label>
+                            <input id="student-id" class="w3-input w3-border" type="text">
+
+                            <br>
+
+                            <div class="w3-row">
+                                <div class="w3-half">
+                                    <label class="w3-label w3-text-blue">Grades</label>
+                                    <input id="student-grade" class="w3-input w3-border" type="text">
+                                </div>
+                                <div class="w3-half">
+                                    <label class="w3-label w3-text-blue">Class</label>
+                                    <input id="student-class" class="w3-input w3-border" type="text">
+                                </div>
+                            </div>
+
+                            <br>
+
+                            <label class="w3-label w3-text-blue">Student Name</label>
+                            <input id="student-name" class="w3-input w3-border" type="text">
+
+                            <br>
+
+                            <input class="w3-radio" value="Male" type="radio" name="sex">
+                            <label class="w3-validate">Male</label>
+                            <input class="w3-radio" value="Female" type="radio" name="sex">
+                            <label class="w3-validate">Female</label>
+
+                            <p></p>
+                            <p id="empty_id" class="w3-text-red">Please Input Student ID</p>
+                            <p id="empty_c_g" class="w3-text-red">Please Input Grades or Class</p>
+                            <p id="empty_name" class="w3-text-red">Please Input Student Name</p>
+                            <p id="empty_sex" class="w3-text-red">Please Choose one</p>
+                            <p id="already_have" class="w3-text-red">Student ID Already Exists</p>
+                            <p id="type_error" class="w3-text-red">Please Input Integer</p>
+
+                            <p id="success" class="w3-text-green">Success</p>
+
+                            <button id="submit_add" class="w3-btn w3-light-blue" style="width:100%">Add</button>
+                        </div>
+                    </div>
+
+                    <!--Delete Students-->
+                    <div id="delete_stu_show" class="w3-animate-opacity" style="width:80%;margin:0 auto">
+                        <div class="w3-padding w3-row-padding">
+                            <h2 class="w3-center">Delete Students</h2>
+
+                            <label class="w3-label w3-text-blue">Student ID</label>
+                            <input id="del-student-id" class="w3-input w3-border" type="text">
+
+                            <p id="del-empty-student-id" class="w3-text-red">Please Input Student ID</p>
+                            <p id="del-cant_find" class="w3-text-red">Can't Find</p>
+                            <p id="del-type_error" class="w3-text-red">Please Input Integer</p>
+
+                            <button id="submit_delete_check" class="w3-btn w3-light-blue" style="width:100%">Check</button>
+
+                            <br>
+                            <br>
+
+                            <table id="del-check-post" class="w3-table w3-bordered w3-striped w3-border w3-hoverable">
+                                <tr>
+                                    <th>Student_ID</th>
+                                    <th>Grade</th>
+                                    <th>Class</th>
+                                    <th>Name</th>
+                                    <th>Sex</th>
+                                </tr>
+                                <tr>
+                                    <th><input id="del-check-stu-id" class="w3-input" type="text" readonly ></th>
+                                    <th><input id="del-check-grade" class="w3-input" type="text" readonly></th>
+                                    <th><input id="del-check-class" class="w3-input" type="text" readonly></th>
+                                    <th><input id="del-check-name" class="w3-input" type="text" readonly></th>
+                                    <th><input id="del-check-sex" class="w3-input" type="text" readonly></th>
+                                </tr>
+                            </table>
+
+                            <button id="submit_delete_sent" class="w3-btn w3-light-blue" style="width:100%">Delete</button>
+
+                            <p id="del-delete-success" class="w3-text-green">Delete Success</p>
+                        </div>
+                    </div>
+
+                    <!--Select Student-->
+                    <div id="select_stu_show" class="w3-animate-opacity" style="width:65%;margin:0 auto">
+                        <div class="w3-padding w3-row-padding">
+                            <h2 class="w3-center">Select Students</h2>
+
+                            <select class="w3-select" id="sel_search">
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="all">All</option>
+                                <option value="GRADE">Grade</option>
+                                <option value="CLASS">Class</option>
+                                <option value="STUDENT_ID">Student ID</option>
+                            </select>
+
+                            <label class="w3-label w3-text-blue">Value</label>
+                            <input id="sel_value" class="w3-input w3-border" type="text">
+
+                            <p id="sel_type_error" class="w3-text-red">Please Input Integer</p>
+                            <p id="sel_chose" class="w3-text-red">Please Choose one</p>
+
+                            <button id="submit_select_sent" class="w3-btn w3-light-blue" style="width:100%">Select</button>
+
+                            <br>
+                            <br>
+
+                            <div id="sel_sent">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/jquery.js"></script>
+<script>
+$(function(){
+    $('#add_stu_show').show();
+    $('#delete_stu_show').hide();
+    $('#select_stu_show').hide();
+    $('#add_stu').hide();
+    $('#delete_stu').show();
+    $('#select_stu').show();
+    $('#add_stu_onclick').show();
+    $('#delete_stu_onclick').hide();
+    $('#select_stu_onclick').hide();
+
+    $('#add_stu').click(function(){
+        $('#add_stu_show').show();
+        $('#delete_stu_show').hide();
+        $('#select_stu_show').hide();
+        $('#add_stu').hide();
+        $('#delete_stu').show();
+        $('#select_stu').show();
+        $('#add_stu_onclick').show();
+        $('#delete_stu_onclick').hide();
+        $('#select_stu_onclick').hide();
+    });
+    $('#delete_stu').click(function(){
+        $('#add_stu_show').hide();
+        $('#delete_stu_show').show();
+        $('#select_stu_show').hide();
+        $('#add_stu').show();
+        $('#delete_stu').hide();
+        $('#select_stu').show();
+        $('#add_stu_onclick').hide();
+        $('#delete_stu_onclick').show();
+        $('#select_stu_onclick').hide();
+    });
+    $('#select_stu').click(function(){
+        $('#add_stu_show').hide();
+        $('#delete_stu_show').hide();
+        $('#select_stu_show').show();
+        $('#add_stu').show();
+        $('#delete_stu').show();
+        $('#select_stu').hide();
+        $('#add_stu_onclick').hide();
+        $('#delete_stu_onclick').hide();
+        $('#select_stu_onclick').show();
+    });
+});
+</script>
+<!--hide-->
+<script>
+$(function(){
+    $('#empty_id').hide();
+    $('#empty_c_g').hide();
+    $('#empty_name').hide();
+    $('#empty_sex').hide();
+    $('#already_have').hide();
+    $('#type_error').hide();
+    $('#success').hide();
+
+    $('#del-check-post').hide();
+    $('#submit_delete_sent').hide();
+    $('#del-empty-student-id').hide();
+    $('#del-cant_find').hide();
+    $('#del-type_error').hide();
+    $('#del-delete-success').hide();
+    $('#sel_type_error').hide();
+    $('#sel_chose').hide();
+});
+</script>
+
+<!--add-->
+<script>
+$(function(){
+    $('#submit_add').click(function(){
+        var data = {};
+        data["student-id"] = $('#student-id').val();
+        data["student-grade"] = $('#student-grade').val();
+        data["student-class"] = $('#student-class').val();
+        data["student-name"] = $('#student-name').val();
+        data["sex"] = $("input[name='sex']:checked").val();
+        var jsonStr =JSON.stringify(data)
+        $.ajax({
+            type: "post",
+            url: "/manage/add",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: jsonStr,
+            success: function(res){
+                var val = {};
+                $.each(res,function(i,v){
+                    val[i] = v
+                });
+                temp = val["error_des"]
+
+                $('#empty_id').hide();
+                $('#empty_c_g').hide();
+                $('#empty_name').hide();
+                $('#empty_sex').hide();
+                $('#already_have').hide();
+                $('#type_error').hide();
+                $('#success').hide();
+
+                if(temp == "success"){
+                    $('#success').show();
+                }
+                else if(temp == "empty_id"){
+                    $('#empty_id').show();
+                }
+                else if(temp == "empty_grade"){
+                    $('#empty_c_g').show();
+                }
+                else if(temp == "empty_class"){
+                    $('#empty_c_g').show();
+                }
+                else if(temp == "empty_name"){
+                    $('#empty_name').show();
+                }
+                else if(temp == "empty_sex"){
+                    $('#empty_sex').show();
+                }
+                else if(temp == "already_have"){
+                    $('#already_have').show();
+                }
+                else if(temp == "type_error"){
+                    $('#type_error').show();
+                }
+            }
+        });
+    });
+});
+</script>
+
+<!--delete-->
+<script>
+$(function(){
+    $('#submit_delete_check').click(function(){
+        var data = {};
+        data["student-id"] = $('#del-student-id').val();
+        data["type"] = "check"
+
+        var jsonStr =JSON.stringify(data)
+        $.ajax({
+            type: "post",
+            url: "/manage/delete",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: jsonStr,
+            success: function(res){
+                var val = {};
+                $.each(res,function(i,v){
+                    val[i] = v
+                });
+                temp = val["error_des"]
+
+                $('#del-empty-student-id').hide();
+                $('#del-cant_find').hide();
+                $('#del-type_error').hide();
+                $('#del-check-post').hide();
+                $('#submit_delete_sent').hide();
+                $('#del-delete-success').hide();
+
+                if(temp == "success"){
+                    $('#del-check-post').show();
+                    $('#submit_delete_sent').show();
+
+                    $('#del-check-stu-id').val(val["student_id"]);
+                    $('#del-check-grade').val(val["grade"]);
+                    $('#del-check-class').val(val["class"]);
+                    $('#del-check-name').val(val["name"]);
+                    $('#del-check-sex').val(val["sex"]);
+                }
+                else if(temp == "None"){
+                    $('#del-empty-student-id').show();
+                }
+                else if(temp == "cant_find"){
+                    $('#del-cant_find').show();
+                }
+                else if(temp == "type_error"){
+                    $('#del-type_error').show();
+                }
+            }
+        });
+    });
+
+    $('#submit_delete_sent').click(function(){
+        var data = {};
+        data["student-id"] = $('#del-student-id').val();
+        data["type"] = "sent"
+
+        var jsonStr =JSON.stringify(data)
+        $.ajax({
+            type: "post",
+            url: "/manage/delete",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: jsonStr,
+            success: function(res){
+                var val = {};
+                $.each(res,function(i,v){
+                    val[i] = v
+                });
+                temp = val["error_des"]
+
+                $('#del-delete-success').hide();
+                $('#del-type_error').hide();
+
+                if(temp == "success"){
+                    $('#del-delete-success').show();
+                    $('#submit_delete_sent').hide();
+                    $('#del-check-post').hide();
+                }
+                else if(temp == "type_error"){
+                    $('#del-type_error').show();
+                }
+            }
+        });
+    });
+});
+</script>
+
+<!--select-->
+<script>
+$(function(){
+    $('#submit_select_sent').click(function(){
+        var data = {};
+        data["sel_value"] = $('#sel_value').val();
+        data["search_type"] = $('#sel_search').val();
+
+        var jsonStr =JSON.stringify(data)
+        $.ajax({
+            type: "post",
+            url: "/manage/select",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: jsonStr,
+            success: function(res){
+                var val = {};
+                $.each(res,function(i,v){
+                    val[i] = v
+                });
+                temp = val["error_des"]
+
+                $('#sel_sent').html('<p>Searching</p>');
+                $('#sel_type_error').hide();
+                $('#sel_chose').hide();
+
+                if(temp == "success"){
+                    var flag = true;
+                    var index = 0;
+                    var string = '';
+                    while(flag){
+                        var v = res[String(index)];
+                        if(v === undefined){
+                            flag = false;
+                            break;
+                        }
+                        string = string+'<tr><th>'+String(v[1])+'</th><th>'+String(v[2])+'</th><th>'+String(v[3])+'</th><th>'+String(v[4])+'</th><th>'+String(v[5])+'</th></tr>';
+                        index += 1;
+                    }
+                    $('#sel_sent').html('<table id="" class="w3-table w3-bordered w3-striped w3-border w3-hoverable"><tr><th>Student_ID</th><th>Grade</th><th>Class</th><th>Name</th><th>Sex</th></tr>'+string+'</table>');
+                }
+                else if(temp == "type_error"){
+                    $('#sel_sent').html('');
+                    $('#sel_type_error').show();
+                }
+                else if(temp == "choose"){
+                    $('#sel_sent').html('');
+                    $('#sel_chose').show();
+                }
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

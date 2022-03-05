@@ -1,0 +1,99 @@
+{% extends "base_student.html" %}
+
+{% block connect %}
+<div class="w3-main w3-animate-opacity" style="margin-left:300px">
+    <header class="w3-container">
+        <h1><b>Investigation</b></h1>
+        <div class="w3-section w3-bottombar w3-padding-16">
+            <select class="w3-select" id="sel">
+                <option value="" disabled selected>Choose your option</option>
+                <option value="base">Base</option>
+            </select>
+        </div>
+    </header>
+    <div class="w3-row">
+        <div id="show_base" class="w3-row-padding">
+            <div class="w3-card-2" id="accept">
+                <h3 class="w3-text-green w3-center">accept</h3>
+            </div>
+            <div class="w3-card-2" id="already_have">
+                <h3 class="w3-text-red w3-center">already_have</h3>
+            </div>
+            <div class="w3-card-4 w3-animate-opacity">
+                <div class="w3-container w3-teal">
+                    <h2 class="w3-left">Base Investigation</h2>
+                </div>
+                <form class="w3-container" id="base">
+                    <div id="p_1">
+                        {% for each in data %}
+                        <h6 class="w3-text-grey">{{ each['title'] }}</h6>
+                        <table>
+                            <tr>
+                                {% for index, i in each['data'].items() %}
+                                <td>
+                                    <input id="{{ i }}_{{ index }}" class="w3-radio" type="radio" name="{{ each['index'] }}" value="{{ index }}">
+                                    <label class="w3-validate">{{ i }}</label>
+                                </td>
+                                {% endfor %}
+                            </tr>
+                        </table>
+                        {% endfor %}
+                    </div>
+                </form>
+                <br>
+            </div>
+        </div>
+
+        <div id="button" class="w3-row-padding">
+            <div class="w3-card-4 w3-animate-opacity">
+                <button class="w3-btn w3-teal" id="post" style="width:100%">Sent</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/jquery.js"></script>
+<script>
+$(function(){
+    $("#show_base").hide();
+    $("#button").hide();
+    $("#accept").hide();
+    $("#already_have").hide();
+
+    $("#sel").change(function(){
+        val = $("#sel").val();
+        if(val == "base"){
+            $("#show_base").show();
+            $("#accept").hide();
+            $("#already_have").hide();
+        }
+        $("#button").show();
+    });
+});
+</script>
+<script>
+$(function(){
+    $("#post").click(function(){
+        var data = {};
+        data["title"] = $("#sel").val();
+        data["data"] = $('#'+ data["title"] +'').serialize();
+        var jsonStr =JSON.stringify(data);
+        $.ajax({
+            type: "post",
+            url: "/student/investigation",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: jsonStr,
+            success: function(res){
+                if(res == 'accept'){
+                    $("#accept").show();
+                }
+                else if(res == 'already_have'){
+                    $("#already_have").show();
+                }
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

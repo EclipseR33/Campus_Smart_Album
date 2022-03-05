@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% if title %}
+    <title>{{title}}</title>
+    {% else %}
+    <title>Hello</title>
+    {% endif %}
+</head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="../static/w3.css">
+<!--background="../static/img/2019-12-16.jpg"-->
+<body class="w3-light-grey w3-content" style="max-width:1600px">
+    <!-- Sidenav/menu -->
+    <nav class="w3-sidenav w3-collapse w3-white" style="z-index:3;width:300px;"><br>
+        <a href="\home" class="w3-padding w3-text-teal">HOME</a>
+        <a href="\home" class="w3-padding">For Admin</a>
+        <a href="\student" class="w3-padding">For Student</a>
+    </nav>
+    {% block connect %}
+    {% endblock %}
+</body>
+</html>

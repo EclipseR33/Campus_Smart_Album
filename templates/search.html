@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block connect %}
+<div class="w3-main w3-animate-opacity" style="margin-left:300px">
+    <header class="w3-container">
+        <h1><b>Search students</b></h1>
+        <div class="w3-section w3-bottombar w3-padding">
+        </div>
+    </header>
+    <div class="w3-row">
+        <div id="post">
+            <div class="w3-padding w3-row-padding" id="img_post" style="width:50%;margin:0 auto">
+                <div class="w3-accordion w3-light-grey w3-center">
+                    <div id="imgs_image_have_post" class="">
+                        <form id="imgs_have_add" onsubmit="return false">
+                            <h2 class="w3-center">Image Add</h2>
+                            <input name="image_file" type="file" style="width:100%">
+                            <br>
+                            <br>
+                            <button id="post_sub" class="w3-btn w3-light-blue" style="width:100%">Post</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w3-card-4" style="width:50%; margin: 0 auto;" id="None">
+            <h3 class="w3-text-red w3-center">
+                <font face="KaiTi">
+                    无法找到学生
+                </font>
+            </h3>
+        </div>
+        <div class="w3-card-4" style="width:50%; margin: 0 auto;" id="cantfind">
+            <h3 class="w3-text-red w3-center">
+                <font face="KaiTi">
+                    学生未填写调查
+                </font>
+            </h3>
+        </div>
+<!--        show-->
+        <div id="show" class="w3-padding w3-animate-opacity w3-row">
+            <div class="w3-col m8">
+                <img src="static/temp.jpg" class="w3-round w3-hover-opacity" style="width:100%">
+            </div>
+            <div class="w3-col m4" id="add_data">
+            </div>
+            <div>
+                <button id="back_sub" class="w3-btn w3-light-blue" style="width:100%">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/jquery.js"></script>
+<script>
+$(function(){
+    $("#show").hide();
+    $("#post").show();
+    $("#None").hide();
+    $("#cantfind").hide();
+
+    $("#back_sub").click(function(){
+        $("#show").hide();
+        $("#post").show();
+        $("#None").hide();
+        $("#cantfind").hide();
+    });
+});
+</script>
+<script>
+$(function(){
+    $('#post_sub').click(function(){
+        var data = new FormData($('#imgs_have_add')[0]);
+        $.ajax({
+            type: "post",
+            url: "/search/img/post",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function(res){
+                $("#None").hide();
+                $("#cantfind").hide();
+                if(res['error_des'] == 'success'){
+                    data = res['data']
+                    id = res['id']
+
+                    $("#show").show();
+                    $("#post").hide();
+                    string = '<div class="w3-card-4"><h3 class="w3-center"><font face="KaiTi" class="w3-text-blue">学号</font><font face="KaiTi">'+ id +'</font></h3></div>'
+                    for(var i=0; i<data.length; i++){
+                        post = data[i]
+                        string += '<div class="w3-card-4"><h3 class="w3-center"><font face="KaiTi" class="w3-text-green">' + post[0] + '</font><font face="KaiTi">' + post[1] + '</font></h3></div>'
+                    }
+                    $("#add_data").html(string);
+                }
+                else if(res['error_des'] == 'None'){
+                    $("#None").show();
+                }
+                else if(res['error_des'] == 'cantfind'){
+                    $("#cantfind").show();
+                }
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

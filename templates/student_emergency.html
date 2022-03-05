@@ -1,0 +1,320 @@
+{% extends "base.html" %}
+
+{% block connect %}
+<div class="w3-main w3-animate-opacity" style="margin-left:300px">
+    <header class="w3-container">
+        <h1><b>New Pneumonia</b></h1>
+        <h3>COVID-19</h3>
+        <div class="w3-section w3-bottombar w3-padding-16">
+        </div>
+    </header>
+    <!--New Pneumonia-->
+    <div class="w3-row-padding">
+        <div style="width:100%;margin:0 auto">
+            <div id="show_new_pneumonia_outline">
+                <div class="w3-container w3-card-4 w3-round" id="div_new_pneumonia">
+                        <div>
+                            <h3 class="w3-text-grey">Latest data</h3>
+                            <div class="w3-light-grey w3-row-padding">
+                                <div class="w3-col m3">
+                                    <p><h3 class="w3-center w3-text-red"><b>{{data["diagnosed"]}}</b></h3>
+                                    <p class="w3-center w3-text-red"><b>diagnosed</b></p>
+                                    <p class="w3-center"><b class="w3-text-grey">Yesterday </b><b class="w3-center w3-text-red">{{change[0]}}</b></p>
+                                </div>
+                                <div class="w3-col m3">
+                                    <p><h3 class="w3-center w3-text-orange"><b>{{data["suspect"]}}</b></h3>
+                                    <p class="w3-center w3-text-orange"><b>suspect</b></p>
+                                    <p class="w3-center"><b class="w3-text-grey">Yesterday </b><b class="w3-center w3-text-orange">{{change[1]}}</b></p>
+                                </div>
+                                <div class="w3-col m3">
+                                    <p><h3 class="w3-center w3-text-green"><b>{{data["cured"]}}</b></h3>
+                                    <p class="w3-center w3-text-green"><b>cured</b></p>
+                                    <p class="w3-center"><b class="w3-text-grey">Yesterday </b><b class="w3-center w3-text-green">{{change[2]}}</b></p>
+                                </div>
+                                <div class="w3-col m3">
+                                    <p><h3 class="w3-center w3-text-black"><b>{{data["death"]}}</b></h3>
+                                    <p class="w3-center w3-text-black"><b>death</b></p>
+                                    <p class="w3-center"><b class="w3-text-grey">Yesterday </b><b class="w3-center w3-text-black">{{change[3]}}</b></p>
+                                </div>
+                            </div>
+                            <p class="w3-text-grey">Updated on {{data["date"]}}</p>
+                        </div>
+                    </div>
+                <hr>
+                <div>
+                    <div class="w3-card-4 w3-round">
+                        <br>
+                        <div id="new_pneumonia_outline_line" style="width: 100%;height: 900px">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="w3-card-4 w3-round">
+                        <br>
+                        <div id="new_pneumonia_outline_line_add" style="width: 100%;height: 400px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/echarts.min.js"></script>
+<script>
+    function date(){
+        var date = '{{data["date"]}}';
+        var string = date.substr(0,10);
+        return string;
+    }
+
+    var myChart = echarts.init(document.getElementById('new_pneumonia_outline_line'));
+
+    option = {
+        title: {
+            text: 'Epidemic trend in China'
+        },
+        legend: {
+            data:['diagnosed','suspect','cured','death']
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                magicType: {show: true, type: ['stack', 'tiled']},
+                saveAsImage: {show: true}
+            }
+        },
+        dataset: {
+            source: [
+                ['date','{{history[8]["date"]}}','{{history[7]["date"]}}',
+                    '{{history[6]["date"]}}','{{history[5]["date"]}}',
+                    '{{history[4]["date"]}}','{{history[3]["date"]}}',
+                    '{{history[2]["date"]}}','{{history[1]["date"]}}',
+                    '{{history[0]["date"]}}',date()],
+                ['diagnosed','{{history[9]["confirmedNum"]}}','{{history[8]["confirmedNum"]}}',
+                    '{{history[7]["confirmedNum"]}}','{{history[6]["confirmedNum"]}}',
+                    '{{history[5]["confirmedNum"]}}','{{history[4]["confirmedNum"]}}',
+                    '{{history[3]["confirmedNum"]}}','{{history[2]["confirmedNum"]}}',
+                    '{{history[1]["confirmedNum"]}}','{{history[0]["confirmedNum"]}}','{{data["diagnosed"]}}'],
+                ['suspect','{{history[9]["suspectedNum"]}}','{{history[8]["suspectedNum"]}}',
+                    '{{history[7]["suspectedNum"]}}','{{history[6]["suspectedNum"]}}',
+                    '{{history[5]["suspectedNum"]}}','{{history[4]["suspectedNum"]}}',
+                    '{{history[3]["suspectedNum"]}}','{{history[2]["suspectedNum"]}}',
+                    '{{history[1]["suspectedNum"]}}','{{history[0]["suspectedNum"]}}','{{data["suspect"]}}'],
+                ['cured','{{history[9]["curesNum"]}}','{{history[8]["curesNum"]}}',
+                    '{{history[7]["curesNum"]}}','{{history[6]["curesNum"]}}',
+                    '{{history[5]["curesNum"]}}','{{history[4]["curesNum"]}}',
+                    '{{history[3]["curesNum"]}}','{{history[2]["curesNum"]}}',
+                    '{{history[1]["curesNum"]}}','{{history[0]["curesNum"]}}','{{data["cured"]}}'],
+                ['death','{{history[9]["deathsNum"]}}','{{history[8]["deathsNum"]}}',
+                    '{{history[7]["deathsNum"]}}','{{history[6]["deathsNum"]}}',
+                    '{{history[5]["deathsNum"]}}','{{history[4]["deathsNum"]}}',
+                    '{{history[3]["deathsNum"]}}','{{history[2]["deathsNum"]}}',
+                    '{{history[1]["deathsNum"]}}','{{history[0]["deathsNum"]}}','{{data["death"]}}']
+            ]
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: ['{{history[8]["date"]}}',
+                    '{{history[7]["date"]}}','{{history[6]["date"]}}',
+                    '{{history[5]["date"]}}','{{history[4]["date"]}}',
+                    '{{history[3]["date"]}}','{{history[2]["date"]}}',
+                    '{{history[1]["date"]}}','{{history[0]["date"]}}',date()]
+        },
+        yAxis: {
+            type: 'value'
+        },
+        grid: {top: '55%'},
+        series: [
+            {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+            {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+            {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+            {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+            {
+                type: 'pie',
+                id: 'pie',
+                radius: '30%',
+                center: ['50%', '25%'],
+                label: {
+                    formatter: '{d}%'
+                },
+                encode: {
+                    itemName: 'product',
+                    value: '{{history[0]["date"]}}',
+                    tooltip: '{{history[0]["date"]}}'
+                }
+            }
+        ]
+    };
+
+    myChart.on('updateAxisPointer', function (event) {
+        var xAxisInfo = event.axesInfo[0];
+        if (xAxisInfo) {
+            var dimension = xAxisInfo.value;
+            myChart.setOption({
+                series: {
+                    id: 'pie',
+                    label: {
+                        formatter: '{d}%'
+                    },
+                    encode: {
+                        value: dimension,
+                        tooltip: dimension
+                    }
+                }
+            });
+        }
+    });
+
+    myChart.setOption(option);
+
+    var chart2 = echarts.init(document.getElementById('new_pneumonia_outline_line_add'));
+    chart2.setOption({
+        title: {
+            text: 'Epidemic trend in China'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['diagnosed','suspect','cured','death']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                magicType: {show: true, type: ['stack', 'tiled']},
+                saveAsImage: {show: true}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: ['{{history[7]["date"]}}',
+                    '{{history[6]["date"]}}','{{history[5]["date"]}}',
+                    '{{history[4]["date"]}}','{{history[3]["date"]}}',
+                    '{{history[2]["date"]}}','{{history[1]["date"]}}',
+                    '{{history[0]["date"]}}',date()],
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            name: 'diagnosed',
+            type: 'line',
+            smooth: true,
+            data: ['{{history[8]["confirmedNum"]}}'-'{{history[9]["confirmedNum"]}}',
+                    '{{history[7]["confirmedNum"]}}'-'{{history[8]["confirmedNum"]}}','{{history[6]["confirmedNum"]}}'-'{{history[7]["confirmedNum"]}}',
+                    '{{history[5]["confirmedNum"]}}'-'{{history[6]["confirmedNum"]}}','{{history[4]["confirmedNum"]}}'-'{{history[5]["confirmedNum"]}}',
+                    '{{history[3]["confirmedNum"]}}'-'{{history[4]["confirmedNum"]}}','{{history[2]["confirmedNum"]}}'-'{{history[3]["confirmedNum"]}}',
+                    '{{history[1]["confirmedNum"]}}'-'{{history[2]["confirmedNum"]}}','{{history[0]["confirmedNum"]}}'-'{{history[1]["confirmedNum"]}}']
+        },
+        {
+            name: 'suspect',
+            type: 'line',
+            smooth: true,
+            data: ['{{history[8]["suspectedNum"]}}'-'{{history[9]["suspectedNum"]}}',
+                    '{{history[7]["suspectedNum"]}}'-'{{history[8]["suspectedNum"]}}','{{history[6]["suspectedNum"]}}'-'{{history[7]["suspectedNum"]}}',
+                    '{{history[5]["suspectedNum"]}}'-'{{history[6]["suspectedNum"]}}','{{history[4]["suspectedNum"]}}'-'{{history[5]["suspectedNum"]}}',
+                    '{{history[3]["suspectedNum"]}}'-'{{history[4]["suspectedNum"]}}','{{history[2]["suspectedNum"]}}'-'{{history[3]["suspectedNum"]}}',
+                    '{{history[1]["suspectedNum"]}}'-'{{history[2]["suspectedNum"]}}','{{history[0]["suspectedNum"]}}'-'{{history[1]["suspectedNum"]}}']
+        },
+        {
+            name: 'cured',
+            type: 'line',
+            smooth: true,
+            data: ['{{history[8]["curesNum"]}}'-'{{history[9]["curesNum"]}}',
+                    '{{history[7]["curesNum"]}}'-'{{history[8]["curesNum"]}}','{{history[6]["curesNum"]}}'-'{{history[7]["curesNum"]}}',
+                    '{{history[5]["curesNum"]}}'-'{{history[6]["curesNum"]}}','{{history[4]["curesNum"]}}'-'{{history[5]["curesNum"]}}',
+                    '{{history[3]["curesNum"]}}'-'{{history[4]["curesNum"]}}','{{history[2]["curesNum"]}}'-'{{history[3]["curesNum"]}}',
+                    '{{history[1]["curesNum"]}}'-'{{history[2]["curesNum"]}}','{{history[0]["curesNum"]}}'-'{{history[1]["curesNum"]}}']
+        },
+        {
+            name: 'death',
+            type: 'line',
+            smooth: true,
+            data: ['{{history[8]["deathsNum"]}}'-'{{history[9]["deathsNum"]}}',
+                    '{{history[7]["deathsNum"]}}'-'{{history[8]["deathsNum"]}}','{{history[6]["deathsNum"]}}'-'{{history[7]["deathsNum"]}}',
+                    '{{history[5]["deathsNum"]}}'-'{{history[6]["deathsNum"]}}','{{history[4]["deathsNum"]}}'-'{{history[5]["deathsNum"]}}',
+                    '{{history[3]["deathsNum"]}}'-'{{history[4]["deathsNum"]}}','{{history[2]["deathsNum"]}}'-'{{history[3]["deathsNum"]}}',
+                    '{{history[1]["deathsNum"]}}'-'{{history[2]["deathsNum"]}}','{{history[0]["deathsNum"]}}'-'{{history[1]["deathsNum"]}}']
+        }]
+    });
+</script>
+
+<script src="../static/jquery.js"></script>
+
+<script>
+$(function(){
+    $('#show_new_pneumonia_outline').show();
+    $('#show_new_pneumonia_map').hide();
+});
+</script>
+<script>
+$(function(){
+    $('#post_type_error').hide();
+    $('#post_chose').hide();
+    $('#post_sub').hide();
+    $('#message_label').hide();
+    $('#message_value').hide();
+});
+</script>
+<script>
+$(function(){
+    $('#check_sub').click(function(){
+        var data = {};
+        data["new_pneumonia_value"] = $('#new_pneumonia_value').val();
+        data["search_type"] = $('#new_pneumonia_search').val();
+
+        var jsonStr =JSON.stringify(data)
+        $.ajax({
+            type: "post",
+            url: "/emergency/select",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            data: jsonStr,
+            success: function(res){
+                var val = {};
+                $.each(res,function(i,v){
+                    val[i] = v
+                });
+                temp = val["error_des"]
+
+                $('#post_sent').html('<p>Searching</p>');
+                $('#post_type_error').hide();
+                $('#post_chose').hide();
+
+                if(temp == "success"){
+                    var flag = true;
+                    var index = 0;
+                    var string = '';
+                    while(flag){
+                        var v = res[String(index)];
+                        if(v === undefined){
+                            flag = false;
+                            break;
+                        }
+                        string = string+'<tr><th>'+String(v[1])+'</th><th>'+String(v[2])+'</th><th>'+String(v[3])+'</th><th>'+String(v[4])+'</th><th>'+String(v[5])+'</th></tr>';
+                        index += 1;
+                    }
+                    $('#post_sent').html('<table id="" class="w3-table w3-bordered w3-striped w3-border w3-hoverable"><tr><th>Student_ID</th><th>Grade</th><th>Class</th><th>Name</th><th>Sex</th></tr>'+string+'</table>');
+                    $('#post_sub').show();
+                    $('#message_label').show();
+                    $('#message_value').show();
+                }
+                else if(temp == "type_error"){
+                    $('#post_sent').html('');
+                    $('#post_type_error').show();
+                }
+                else if(temp == "choose"){
+                    $('#post_sent').html('');
+                    $('#post_chose').show();
+                }
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
